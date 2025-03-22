@@ -29,7 +29,7 @@ public class Pagamento {
     private MetodoPagamento metodoPagamento;
 
     @Column(length = 16)
-    private String numeroCartao; // Apenas para cartão
+    private String numeroCartao;
 
     @Column(nullable = false)
     private BigDecimal valor;

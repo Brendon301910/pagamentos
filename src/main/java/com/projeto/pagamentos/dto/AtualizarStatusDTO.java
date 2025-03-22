@@ -1,8 +1,11 @@
 package com.projeto.pagamentos.dto;
 import com.projeto.pagamentos.model.StatusPagamento;
-import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-public record AtualizarStatusDTO(
-        @NotNull Long idPagamento,
-        @NotNull StatusPagamento novoStatus
-) {}
+@Getter
+@Setter
+public class AtualizarStatusDTO {
+    private Long id;
+    private StatusPagamento status;
+}
