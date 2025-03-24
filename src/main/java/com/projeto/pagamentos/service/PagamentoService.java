@@ -39,7 +39,7 @@ public class PagamentoService {
 
     @Transactional
     public PagamentoResponseDTO atualizarStatus(AtualizarStatusDTO dto) {
-        System.out.println("Atualizando status para pagamento ID: " + dto.getId());  // Adicione um log
+
         Pagamento pagamento = repository.findById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("Pagamento com ID " + dto.getId() + " não encontrado."));
 
@@ -51,7 +51,7 @@ public class PagamentoService {
             throw new IllegalStateException("Pagamentos com falha só podem voltar para PENDENTE.");
         }
 
-        pagamento.setStatus(dto.getStatus()); // CORREÇÃO AQUI
+        pagamento.setStatus(dto.getStatus());
 
         Pagamento salvo = repository.save(pagamento);
 
@@ -67,7 +67,6 @@ public class PagamentoService {
     public List<PagamentoResponseDTO> listarTodos(Integer codigoDebito, String cpfCnpj, StatusPagamento status) {
         List<Pagamento> pagamentos;
 
-        // Filtragem de acordo com os parâmetros passados
         if (codigoDebito != null) {
             pagamentos = repository.findByCodigoDebito(codigoDebito);
         } else if (cpfCnpj != null) {
@@ -75,7 +74,7 @@ public class PagamentoService {
         } else if (status != null) {
             pagamentos = repository.findByStatus(status);
         } else {
-            pagamentos = repository.findAll();  // Caso nenhum filtro seja passado
+            pagamentos = repository.findAll();
         }
 
         return pagamentos.stream()
@@ -89,12 +88,10 @@ public class PagamentoService {
         Pagamento pagamento = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pagamento não encontrado"));
 
-        // Verifica se o pagamento já está inativo
         if (pagamento.getStatus() == StatusPagamento.INATIVO) {
             throw new IllegalStateException("O pagamento já foi excluído.");
         }
 
-        // Atualiza o status para INATIVO
         pagamento.setStatus(StatusPagamento.INATIVO);
         repository.save(pagamento);
     }
